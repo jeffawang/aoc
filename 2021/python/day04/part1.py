@@ -3,47 +3,24 @@ import numpy as np
 with open ("inputs/day04") as f:
     raw = f.read().splitlines()
 
-c = calls = raw[0].split(',')
-bingos = [ i for i in raw[2:] if len(i) ]
+c = calls = np.array(raw[0].split(',')).astype(int)
 
-i = iter(bingos)
+i = iter( i for i in raw[2:] if len(i) )
+b = [ np.array([ y.split() for y in x ]).astype(int) for x in zip(i,i,i,i,i) ]
 
-bingos = list(zip(i,i,i,i,i))
-b = bingos = list(map(lambda x: list(map(lambda y: y.split(), x)), bingos))
+def evalBoard(board, c):
+    def checkRows(b):
+        return any(all(y in c for y in x) for x in b)
+    return checkRows(board) or checkRows(board.transpose())
 
-def evalBoard(board):
-    board = np.array(board)
-    if any(map(lambda x: all(map(lambda y: y in c, x)), board)):
-        return True
-    if any(map(lambda x: all(map(lambda y: y in c, x)), board.transpose())):
-        return True
-    return False
+def bingoValue(board, c):
+    uncalled = [ int(i) for row in board for i in row if i not in c ]
+    return sum(uncalled) * int(c[-1])
 
-
-
-for i in range(1,len(calls)):
+for i in range(5,len(calls)):
     c = calls[:i]
-    print(len(c), c[-1])
-    f = list(filter(evalBoard, b))
+    f = list(filter(lambda x: evalBoard(x, c), b))
     if len(f):
         break
 
-def bingoValue(board):
-    global c
-    sum = 0
-    for row in board:
-        for n in row:
-            if n not in c:
-                print('{:2}'.format(n), end=' ')
-                sum += int(n)
-            else:
-                print('  ', end=' ')
-        print()
-    print(sum)
-    print(int(c[-1]))
-    return sum * int(c[-1])
-    called = [ int(i) for row in board for i in row if i in c ]
-    uncalled = [ int(i) for row in board for i in row if i not in c ]
-    # return sum(uncalled) * int(c[-1])
-
-print(bingoValue(f[0]))
+print(bingoValue(f[0], c))
