@@ -1,11 +1,11 @@
 import numpy as np
 
 with open ("inputs/day04") as f:
-    raw = f.read().splitlines()
+    lines = f.read().splitlines()
 
-c = calls = np.array(raw[0].split(',')).astype(int)
+c = calls = np.array(lines[0].split(',')).astype(int)
 
-i = iter( i for i in raw[2:] if len(i) )
+i = iter( i for i in lines[2:] if len(i) )
 b = [ np.array([ y.split() for y in x ]).astype(int) for x in zip(i,i,i,i,i) ]
 
 def evalBoard(board, c):
