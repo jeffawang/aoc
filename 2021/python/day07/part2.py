@@ -3,6 +3,7 @@ with open("inputs/day07") as f:
 
 found = False
 for i in range(max(p)):
+    # Sum of arithmetic series
     f = int(sum(abs(i-j) * ((1 + abs(i-j))/2) for j in p))
     if not found or f < fuels:
         found = True
