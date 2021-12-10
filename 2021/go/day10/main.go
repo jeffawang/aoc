@@ -9,10 +9,6 @@ import (
 
 var input string = "../../inputs/day10"
 
-func pop(stack []rune) (rune, []rune) {
-	return stack[len(stack)-1], stack[:len(stack)-1]
-}
-
 var d = map[rune]rune{
 	'(': ')',
 	'{': '}',
